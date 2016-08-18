@@ -36,7 +36,8 @@ function obtenerHorarioProf($cordovaSQLite) {
             asignaturas = [];
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
             horariop = $cordovaSQLite.execute(db, sqlConsulta, []).then(function(resultado) {

@@ -35,7 +35,8 @@ function obtenerNotasEstu($cordovaSQLite) {
             notas = [];
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
             calificaciones = $cordovaSQLite.execute(db, sqlConsulta, []).then(function(resultado) {

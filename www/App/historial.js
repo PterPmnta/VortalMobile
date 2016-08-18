@@ -3,9 +3,9 @@ angular.module('historialApp', ['ionic', 'ngCordova'])
     .factory('salirApp', salirApp);
 
 
-borrarHistorial.$inject = ['$scope', '$ionicHistory', 'salirApp', '$ionicPopup', '$state', '$timeout', '$window'];
+borrarHistorial.$inject = ['$scope', '$ionicHistory', 'salirApp', '$ionicPopup', '$state', '$timeout'];
 
-function borrarHistorial($scope, $ionicHistory, salirApp, $ionicPopup, $state, $timeout, $window) {
+function borrarHistorial($scope, $ionicHistory, salirApp, $ionicPopup, $state, $timeout) {
 
 
     $scope.showConfirm = function() {
@@ -22,16 +22,15 @@ function borrarHistorial($scope, $ionicHistory, salirApp, $ionicPopup, $state, $
         confirmPopup.then(function(res) {
 
             var nombreVista;
+            nombreVista = salirApp.obtenerVista();
 
             if (res) {
 
-                //var mensaje = "Cerrando sesion";
-                // mostrarMensaje.setMensaje(mensaje);
 
-                delete $window.localStorage.logged;
-                console.log($window.localStorage.logged);
+                /* delete $window.localStorage.logged;
+                 console.log($window.localStorage.logged);*/
 
-                $state.go('Loading');
+                $state.go('salidaApp');
 
                 if (nombreVista == 'menuestu') {
                     salirApp.eliminarTablasEstu();
@@ -45,7 +44,7 @@ function borrarHistorial($scope, $ionicHistory, salirApp, $ionicPopup, $state, $
                 }, 2500);
 
             } else {
-                console.log('Cancelando');
+                console.log('Cancelado');
             }
 
         });
@@ -95,7 +94,8 @@ function salirApp($ionicPlatform, $ionicHistory, $timeout, $cordovaSQLite) {
         var db, dropPerfil, dropHorario, dropTareasEstu;
 
         db = $cordovaSQLite.openDB({
-            name: "unicesar.db"
+            name: "unicesar.db",
+            location: "default"
         });
 
         dropPerfil = "DROP TABLE Estudiante";
@@ -113,7 +113,8 @@ function salirApp($ionicPlatform, $ionicHistory, $timeout, $cordovaSQLite) {
         var db, dropPerfil_P, dropHorario_P, dropGrupos, dropTareasProf;
 
         db = $cordovaSQLite.openDB({
-            name: "unicesar.db"
+            name: "unicesar.db",
+            location: "default"
         });
 
         dropPerfil_P = "DROP TABLE Profesor";
@@ -128,11 +129,20 @@ function salirApp($ionicPlatform, $ionicHistory, $timeout, $cordovaSQLite) {
 
     };
 
+    function obtenerVista() {
+
+        var estadoNombre;
+        estadoNombre = $ionicHistory.currentStateName();
+        return estadoNombre;
+
+    }
+
 
     return {
         salida: salida,
         eliminarTablasEstu: eliminarTablasEstu,
-        eliminarTablasProf: eliminarTablasProf
+        eliminarTablasProf: eliminarTablasProf,
+        obtenerVista: obtenerVista
     };
 
 };

@@ -81,6 +81,12 @@ function config($stateProvider, $urlRouterProvider) {
             controller: "tareasProf"
         })
 
+    .state('salidaApp', {
+        url: '/salidaApp',
+        templateUrl: "Templates/exitLoading.html",
+        controller: "appExit"
+    })
+
     .state('oficinas', {
         url: '/oficinas/:tab',
         templateUrl: "Templates/Oficinas/oficinas.html",
@@ -96,7 +102,7 @@ function formulario($scope, obtenerDatos, $state, $timeout, $ionicHistory, $wind
 
     $scope.login = function() {
 
-        $window.localStorage.logged = true;
+        //$window.localStorage.logged = true;
 
         var datos, datosRespuesta, nombreVista;
 
@@ -220,7 +226,8 @@ function obtenerDatos($http, $httpParamSerializer, $cordovaSQLite, $ionicHistory
         dropTareasEstu = "DROP TABLE TareasEstu";
 
         db = $cordovaSQLite.openDB({
-            name: "unicesar.db"
+            name: "unicesar.db",
+            location: "default"
         });
 
 
@@ -287,7 +294,8 @@ function obtenerDatos($http, $httpParamSerializer, $cordovaSQLite, $ionicHistory
         Cantidad_Estu = 0;
 
         db = $cordovaSQLite.openDB({
-            name: "unicesar.db"
+            name: "unicesar.db",
+            location: "default"
         });
 
         $cordovaSQLite.execute(db, dropPerfil_P);

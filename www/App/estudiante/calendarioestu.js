@@ -132,7 +132,8 @@ function fabricaTareasEstu($cordovaSQLite) {
             var cantidad, sqlConsulta_Cantidad, l_tareas, db, mensajeCantidad;
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
             sqlConsulta_Cantidad = "SELECT * FROM TareasEstu";
@@ -164,7 +165,8 @@ function fabricaTareasEstu($cordovaSQLite) {
 
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
             sqlInsertar = "INSERT INTO TareasEstu(Fila, Texto, Fecha) VALUES(?,?,?)";
@@ -214,7 +216,8 @@ function fabricaTareasEstu($cordovaSQLite) {
             fecha = fechaDigitada;
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
             sqlInsertar = "INSERT INTO TareasEstu(Fila, Texto, Fecha) VALUES(?,?,?)";
@@ -232,7 +235,8 @@ function fabricaTareasEstu($cordovaSQLite) {
             tarea = {};
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
             fechaDigitada = moment(new Date()).format('YYYY-MM-DD');
@@ -289,7 +293,8 @@ function fabricaTareasEstu($cordovaSQLite) {
             tarea = {};
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
             fechaHoy = moment(new Date()).format('YYYY-MM-DD');
@@ -341,7 +346,8 @@ function fabricaTareasEstu($cordovaSQLite) {
             var sqlEliminar, sqlConsulta_Cantidad, db, fila, l_tareas, cantidadTareas;
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
             fila = fila_tarea;

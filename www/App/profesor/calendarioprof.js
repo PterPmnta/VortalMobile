@@ -130,7 +130,8 @@ function fabricaTareasProf($cordovaSQLite) {
             var cantidad, sqlConsulta_Cantidad, l_tareas, db, mensajeCantidad;
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
             sqlConsulta_Cantidad = "SELECT * FROM TareasProf";
@@ -161,7 +162,8 @@ function fabricaTareasProf($cordovaSQLite) {
             fecha = fechaDigitada;
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
 
@@ -212,7 +214,8 @@ function fabricaTareasProf($cordovaSQLite) {
             fecha = fechaDigitada;
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
             sqlInsertar = "INSERT INTO TareasProf(Fila, Texto, Fecha) VALUES(?,?,?)";
@@ -231,7 +234,8 @@ function fabricaTareasProf($cordovaSQLite) {
             console.log(datosConsulta);
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
             fechaDigitada = moment(new Date()).format('YYYY-MM-DD');
@@ -288,7 +292,8 @@ function fabricaTareasProf($cordovaSQLite) {
             tarea = {};
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
             fechaHoy = moment(new Date()).format('YYYY-MM-DD');
@@ -339,7 +344,8 @@ function fabricaTareasProf($cordovaSQLite) {
             var sqlEliminar, sqlConsulta_Cantidad, db, fila, l_tareas, cantidadTareas;
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
             fila = fila_tarea;

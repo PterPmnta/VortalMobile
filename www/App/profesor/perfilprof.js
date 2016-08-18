@@ -116,7 +116,8 @@ function obtenerPerfilProf($cordovaSQLite) {
             perfil = {};
 
             db = $cordovaSQLite.openDB({
-                name: "unicesar.db"
+                name: "unicesar.db",
+                location: "default"
             });
 
             perfil = $cordovaSQLite.execute(db, sqlConsulta, []).then(function(resultado) {

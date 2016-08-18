@@ -1,34 +1,11 @@
-angular.module('salirApp', ['ionic', 'loadingPage'])
-    .controller('appExit', appExit)
-    .factory('fabricaSalida', fabricaSalida);
+angular.module('salirApp', ['ionic'])
+    .controller('appExit', appExit);
 
 
-appExit.$inject = ['$scope', '$ionicPopup', '$state', 'obtenerVista'];
+appExit.$inject = ['$scope'];
 
-function appExit($scope, $ionicPopup, $state, obtenerVista) {
+function appExit($scope) {
 
-    var vista_Anterior;
-
-    obtenerVista.nombreVista();
-
-    $scope.showConfirm = function() {
-
-        var confirmPopup = $ionicPopup.confirm({
-            title: 'Cerrar sesion',
-            template: 'Esta seguro que desea cerrar sesion?',
-            cancelText: 'Cancelar',
-            cancelType: 'button-assertive',
-            okText: 'Salir',
-            okType: 'button-balanced'
-        });
-
-        confirmPopup.then(function(res) {
-            if (res) {
-                $state.go('Loading');
-            } else {
-                console.log('Cancelando');
-            }
-        });
-    };
+    $scope.mensajeSalida = "Cerrando sesion";
 
 }

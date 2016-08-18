@@ -60,7 +60,8 @@ function obtenerGruposProf($cordovaSQLite) {
         grupos = [];
 
         db = $cordovaSQLite.openDB({
-            name: "unicesar.db"
+            name: "unicesar.db",
+            location: "default"
         });
 
         totalGrupos = $cordovaSQLite.execute(db, sqlConsulta, [codigo]).then(function(resultado) {

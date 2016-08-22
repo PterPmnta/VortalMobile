@@ -2,19 +2,17 @@ angular.module('loadingPage', ['ionic', 'loginApp'])
     .controller('mostrarMensaje', mostrarMensaje)
     .factory('obtenerVista', obtenerVista);
 
-mostrarMensaje.$inject = ['$scope', 'obtenerVista', '$window'];
+mostrarMensaje.$inject = ['$scope', '$window'];
 
-function mostrarMensaje($scope, obtenerVista, $window) {
+function mostrarMensaje($scope, $window) {
 
-    $scope.mensaje = "Cargando Información";
-
-    /*  console.log($window.localStorage.logged);
-
-      if (!$window.localStorage.logged) {
-          $scope.mensaje = "Cargando Información";
-      } else {
-          $scope.mensaje = "Cerrando sesión";
-      } */
+    $scope.$on('$ionicView.beforeEnter', function() {
+        if ($window.localStorage.logged) {
+            $scope.mensaje = "Cargando informacion";
+        } else {
+            $scope.mensaje = "Cerrando sesion";
+        }
+    });
 
 }
 

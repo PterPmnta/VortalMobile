@@ -3,10 +3,11 @@ angular.module('historialApp', ['ionic', 'ngCordova'])
     .factory('salirApp', salirApp);
 
 
-borrarHistorial.$inject = ['$scope', '$ionicHistory', 'salirApp', '$ionicPopup', '$state', '$timeout'];
+borrarHistorial.$inject = ['$scope', '$ionicHistory', 'salirApp', '$ionicPopup', '$state', '$timeout', '$window'];
 
-function borrarHistorial($scope, $ionicHistory, salirApp, $ionicPopup, $state, $timeout) {
+function borrarHistorial($scope, $ionicHistory, salirApp, $ionicPopup, $state, $timeout, $window) {
 
+    delete $window.localStorage.logged;
 
     $scope.showConfirm = function() {
 
@@ -30,11 +31,13 @@ function borrarHistorial($scope, $ionicHistory, salirApp, $ionicPopup, $state, $
                 /* delete $window.localStorage.logged;
                  console.log($window.localStorage.logged);*/
 
-                $state.go('salidaApp');
+                $state.go('Loading');
 
                 if (nombreVista == 'menuestu') {
+                    delete $window.localStorage.estudiante;
                     salirApp.eliminarTablasEstu();
                 } else {
+                    delete $window.localStorage.profesor;
                     salirApp.eliminarTablasProf();
                 }
 

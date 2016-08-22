@@ -81,11 +81,7 @@ function config($stateProvider, $urlRouterProvider) {
             controller: "tareasProf"
         })
 
-    .state('salidaApp', {
-        url: '/salidaApp',
-        templateUrl: "Templates/exitLoading.html",
-        controller: "appExit"
-    })
+
 
     .state('oficinas', {
         url: '/oficinas/:tab',
@@ -100,9 +96,20 @@ formulario.$inject = ['$scope', 'obtenerDatos', '$state', '$timeout', '$ionicHis
 
 function formulario($scope, obtenerDatos, $state, $timeout, $ionicHistory, $window) {
 
+    if ($window.localStorage.estudiante) {
+        $state.go('menuestu');
+    } else {
+        if ($window.localStorage.profesor) {
+            $state.go('menuprof');
+        } else {
+            $state.go('login');
+        }
+
+    }
+
     $scope.login = function() {
 
-        //$window.localStorage.logged = true;
+        $window.localStorage.logged = true;
 
         var datos, datosRespuesta, nombreVista;
 
@@ -138,9 +145,14 @@ function formulario($scope, obtenerDatos, $state, $timeout, $ionicHistory, $wind
 
                     } else {
 
+                        $scope.usuariotxt = undefined;
+                        $scope.passwordtxt = undefined;
+
                         if (datosRespuesta.estudiante) {
+                            $window.localStorage.estudiante = true;
                             obtenerDatos.insertarDatosEstu(datosRespuesta);
                         } else {
+                            $window.localStorage.profesor = true;
                             obtenerDatos.insertarDatosDoc(datosRespuesta);
                         };
 

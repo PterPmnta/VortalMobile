@@ -34,7 +34,6 @@ function mostrarPerfilEstu($scope, obtenerPerfilEstu, $element) {
     });
 
     dataImage = localStorage.getItem("imgData");
-    //console.log(dataImage);
 
     if (dataImage == null) {
         $scope.dataImage = "img/profile_icon.png";

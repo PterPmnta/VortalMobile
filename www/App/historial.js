@@ -27,10 +27,6 @@ function borrarHistorial($scope, $ionicHistory, salirApp, $ionicPopup, $state, $
 
             if (res) {
 
-
-                /* delete $window.localStorage.logged;
-                 console.log($window.localStorage.logged);*/
-
                 $state.go('Loading');
 
                 if (nombreVista == 'menuestu') {
@@ -105,6 +101,7 @@ function salirApp($ionicPlatform, $ionicHistory, $timeout, $cordovaSQLite) {
         dropHorario = "DROP TABLE Horario";
         dropTareasEstu = "DROP TABLE TareasEstu";
 
+        localStorage.removeItem("imgData");
         $cordovaSQLite.execute(db, dropPerfil);
         $cordovaSQLite.execute(db, dropHorario);
         $cordovaSQLite.execute(db, dropTareasEstu);
@@ -125,6 +122,7 @@ function salirApp($ionicPlatform, $ionicHistory, $timeout, $cordovaSQLite) {
         dropGrupos = "DROP TABLE GruposP";
         dropTareasProf = "DROP TABLE TareasProf";
 
+        localStorage.removeItem("imgData");
         $cordovaSQLite.execute(db, dropPerfil_P);
         $cordovaSQLite.execute(db, dropHorario_P);
         $cordovaSQLite.execute(db, dropGrupos);
@@ -139,7 +137,6 @@ function salirApp($ionicPlatform, $ionicHistory, $timeout, $cordovaSQLite) {
         return estadoNombre;
 
     }
-
 
     return {
         salida: salida,

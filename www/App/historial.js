@@ -7,13 +7,11 @@ borrarHistorial.$inject = ['$scope', '$ionicHistory', 'salirApp', '$ionicPopup',
 
 function borrarHistorial($scope, $ionicHistory, salirApp, $ionicPopup, $state, $timeout, $window) {
 
-    delete $window.localStorage.logged;
-
     $scope.showConfirm = function() {
 
         var confirmPopup = $ionicPopup.confirm({
             title: 'Cerrar sesion',
-            template: 'Esta seguro que desea cerrar sesion?',
+            template: 'Esta seguro que desea cerrar sesión?',
             cancelText: 'Cancelar',
             cancelType: 'button-assertive',
             okText: 'Salir',
@@ -26,6 +24,8 @@ function borrarHistorial($scope, $ionicHistory, salirApp, $ionicPopup, $state, $
             nombreVista = salirApp.obtenerVista();
 
             if (res) {
+
+                delete $window.localStorage.logged;
 
                 $state.go('Loading');
 
@@ -81,7 +81,11 @@ function salirApp($ionicPlatform, $ionicHistory, $timeout, $cordovaSQLite) {
                 }
 
             } else {
-                $ionicHistory.goBack();
+                if ($ionicHistory.currentStateName() == 'login') {
+                    navigator.app.exitApp();
+                } else {
+                    $ionicHistory.goBack();
+                }
             }
 
         }, 100);

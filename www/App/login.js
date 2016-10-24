@@ -1,4 +1,4 @@
-angular.module('loginApp', ['ionic', 'ngCordova'])
+angular.module('loginApp', ['ionic', 'ngCordova', 'historialApp'])
     .controller('formulario', formulario)
     .service('obtenerDatos', obtenerDatos)
     .config(config);
@@ -92,9 +92,9 @@ function config($stateProvider, $urlRouterProvider) {
 };
 
 
-formulario.$inject = ['$scope', 'obtenerDatos', '$state', '$timeout', '$ionicHistory', '$window'];
+formulario.$inject = ['$scope', 'obtenerDatos', '$state', '$timeout', '$ionicHistory', '$window', '$cordovaNetwork', 'salirApp'];
 
-function formulario($scope, obtenerDatos, $state, $timeout, $ionicHistory, $window) {
+function formulario($scope, obtenerDatos, $state, $timeout, $ionicHistory, $window, $cordovaNetwork, salirApp) {
 
     if ($window.localStorage.estudiante) {
         $state.go('menuestu');
@@ -107,77 +107,95 @@ function formulario($scope, obtenerDatos, $state, $timeout, $ionicHistory, $wind
 
     }
 
+    $scope.networkType = null;
+    $scope.connectionType = null;
+
     $scope.login = function() {
 
         $window.localStorage.logged = true;
 
-        var datos, datosRespuesta, nombreVista;
+        document.addEventListener("deviceready", function() {
+            $scope.networkType = $cordovaNetwork.getNetwork();
+            console.log($scope.networkType);
+        }, false);
 
-        datos = {
-            Usuario: $scope.usuariotxt,
-            Password: $scope.passwordtxt
-        };
-
-        if (typeof datos.Usuario === 'undefined' && typeof datos.Password === 'undefined') {
-
-            $scope.respuesta = "Los campos estan vacios";
-
+        if ($scope.networkType === 'none') {
+            window.plugins.toast.showLongCenter('No existe conexion a internet');
         } else {
 
-            $state.go('Loading');
+            var datos, datosRespuesta, nombreVista;
 
-            obtenerDatos.Autenticacion(datos).then(function(response) {
+            datos = {
+                Usuario: $scope.usuariotxt,
+                Password: $scope.passwordtxt
+            };
 
-                if (response.data) {
+            if (typeof datos.Usuario === 'undefined' && typeof datos.Password === 'undefined') {
 
-                    datosRespuesta = response.data;
+                $scope.respuesta = "Los campos estan vacios";
 
-                    if (datosRespuesta === "Usuario no registrado" ||
-                        datosRespuesta === "Contraseña incorrecta") {
+            } else {
 
-                        $scope.respuesta = datosRespuesta
+                $state.go('Loading');
 
-                        $timeout(function() {
-                            $scope.respuesta = datosRespuesta;
-                            $state.go('login');
-                        }, 1000);
+                obtenerDatos.Autenticacion(datos).then(function(response) {
+
+                    if (response.data) {
+
+                        datosRespuesta = response.data;
+
+                        if (datosRespuesta === "Usuario no registrado" ||
+                            datosRespuesta === "Contraseña incorrecta") {
+
+                            $scope.respuesta = datosRespuesta
+
+                            $timeout(function() {
+                                $scope.respuesta = datosRespuesta;
+                                $state.go('login');
+                            }, 1000);
+
+
+                        } else {
+
+                            $scope.usuariotxt = undefined;
+                            $scope.passwordtxt = undefined;
+                            $scope.respuesta = "";
+
+                            if (datosRespuesta.estudiante) {
+                                $window.localStorage.estudiante = true;
+                                obtenerDatos.insertarDatosEstu(datosRespuesta);
+                            } else {
+                                $window.localStorage.profesor = true;
+                                obtenerDatos.insertarDatosDoc(datosRespuesta);
+                            };
+
+                            $state.go('Loading');
+
+                            $timeout(function() {
+                                $state.go(datosRespuesta.estudiante ? 'menuestu' : 'menuprof');
+                            }, 3000);
+
+                        };
 
 
                     } else {
 
-                        $scope.usuariotxt = undefined;
-                        $scope.passwordtxt = undefined;
-
-                        if (datosRespuesta.estudiante) {
-                            $window.localStorage.estudiante = true;
-                            obtenerDatos.insertarDatosEstu(datosRespuesta);
-                        } else {
-                            $window.localStorage.profesor = true;
-                            obtenerDatos.insertarDatosDoc(datosRespuesta);
-                        };
-
-                        $state.go('Loading');
-
-                        $timeout(function() {
-                            $state.go(datosRespuesta.estudiante ? 'menuestu' : 'menuprof');
-                        }, 3000);
+                        console.log(response.status);
+                        $scope.respuesta = "Error en la solicitud";
+                        $state.go('login');
 
                     };
 
+                });
 
-                } else {
+            };
 
-                    console.log(response.status);
-                    $scope.respuesta = "Error en la solicitud";
-                    $state.go('login');
+        }
 
-                };
-
-            });
-
-        };
 
     };
+
+    salirApp.salida();
 
 };
 

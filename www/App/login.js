@@ -123,7 +123,7 @@ function formulario($scope, obtenerDatos, $state, $timeout, $ionicHistory, $wind
             window.plugins.toast.showLongCenter('No existe conexion a internet');
         } else {
 
-            var datos, datosRespuesta, nombreVista;
+            var datos, datosRespuesta, nombreVista, serverStatus;
 
             datos = {
                 Usuario: $scope.usuariotxt,
@@ -143,39 +143,47 @@ function formulario($scope, obtenerDatos, $state, $timeout, $ionicHistory, $wind
                     if (response.data) {
 
                         datosRespuesta = response.data;
+                        serverStatus = response.statusText;
 
-                        if (datosRespuesta === "Usuario no registrado" ||
-                            datosRespuesta === "Contraseña incorrecta") {
+                        if (serverStatus === 'OK') {
 
-                            $scope.respuesta = datosRespuesta
+                            if (datosRespuesta === "Usuario no registrado" ||
+                                datosRespuesta === "Contraseña incorrecta") {
 
-                            $timeout(function() {
-                                $scope.respuesta = datosRespuesta;
-                                $state.go('login');
-                            }, 1000);
+                                $scope.respuesta = datosRespuesta
+
+                                $timeout(function() {
+                                    $scope.respuesta = datosRespuesta;
+                                    $state.go('login');
+                                }, 1000);
 
 
-                        } else {
-
-                            $scope.usuariotxt = undefined;
-                            $scope.passwordtxt = undefined;
-                            $scope.respuesta = "";
-
-                            if (datosRespuesta.estudiante) {
-                                $window.localStorage.estudiante = true;
-                                obtenerDatos.insertarDatosEstu(datosRespuesta);
                             } else {
-                                $window.localStorage.profesor = true;
-                                obtenerDatos.insertarDatosDoc(datosRespuesta);
+
+                                $scope.usuariotxt = undefined;
+                                $scope.passwordtxt = undefined;
+                                $scope.respuesta = "";
+
+                                if (datosRespuesta.estudiante) {
+                                    $window.localStorage.estudiante = true;
+                                    obtenerDatos.insertarDatosEstu(datosRespuesta);
+                                } else {
+                                    $window.localStorage.profesor = true;
+                                    obtenerDatos.insertarDatosDoc(datosRespuesta);
+                                };
+
+                                $state.go('Loading');
+
+                                $timeout(function() {
+                                    $state.go(datosRespuesta.estudiante ? 'menuestu' : 'menuprof');
+                                }, 3000);
+
                             };
 
-                            $state.go('Loading');
-
-                            $timeout(function() {
-                                $state.go(datosRespuesta.estudiante ? 'menuestu' : 'menuprof');
-                            }, 3000);
-
-                        };
+                        } else {
+                            $state.go('login');
+                            window.plugins.toast.showLongCenter('Problema con el servidor');
+                        }
 
 
                     } else {

@@ -65,6 +65,7 @@ function tareasEstu($scope, $ionicModal, $timeout, fabricaTareasEstu) {
 
                         $scope.nueva.tareasEstu = datos;
                         $scope.nueva.listaTarea = false;
+                        window.plugins.toast.showShortBottom('Tarea creada');
 
                     });
 
@@ -80,6 +81,7 @@ function tareasEstu($scope, $ionicModal, $timeout, fabricaTareasEstu) {
 
                     numeroTareas = informacion;
                     fabricaTareasEstu.insertarTarea(datosTarea, numeroTareas);
+                    window.plugins.toast.showShortBottom('Tarea creada');
 
                 });
 
@@ -109,6 +111,8 @@ function tareasEstu($scope, $ionicModal, $timeout, fabricaTareasEstu) {
                         $scope.nueva.tareasEstu = nueva_informacion;
 
                     });
+
+                    window.plugins.toast.showShortBottom('Tarea eliminada');
 
                 });
 
@@ -343,7 +347,7 @@ function fabricaTareasEstu($cordovaSQLite) {
 
         eliminarTareasHoy: function(fila_tarea) {
 
-            var sqlEliminar, sqlConsulta_Cantidad, db, fila, l_tareas, cantidadTareas;
+            var sqlEliminar, sqlConsulta_Cantidad, db, fila, l_tareas, cantidadTareas, fechaHoy;
 
             db = $cordovaSQLite.openDB({
                 name: "unicesar.db",
@@ -351,13 +355,14 @@ function fabricaTareasEstu($cordovaSQLite) {
             });
 
             fila = fila_tarea;
+            fechaHoy = moment(new Date()).format('YYYY-MM-DD');
 
             sqlEliminar = 'DELETE FROM TareasEstu WHERE Fila = ?';
-            sqlConsulta_Cantidad = "SELECT * FROM TareasEstu";
+            sqlConsulta_Cantidad = 'SELECT * FROM TareasEstu WHERE Fecha = ?';
 
             $cordovaSQLite.execute(db, sqlEliminar, [fila]);
 
-            cantidadTareas = $cordovaSQLite.execute(db, sqlConsulta_Cantidad, []).then(function(resultado) {
+            cantidadTareas = $cordovaSQLite.execute(db, sqlConsulta_Cantidad, [fechaHoy]).then(function(resultado) {
 
                 l_tareas = resultado.rows.length;
                 return l_tareas;
@@ -366,7 +371,7 @@ function fabricaTareasEstu($cordovaSQLite) {
 
             return cantidadTareas;
 
-        }
+        },
 
 
     };

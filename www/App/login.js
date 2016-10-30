@@ -118,9 +118,8 @@ function formulario($scope, obtenerDatos, $state, $timeout, $ionicHistory, $wind
             $scope.networkType = $cordovaNetwork.getNetwork();
             console.log($scope.networkType);
         }, false);
-
         if ($scope.networkType === 'none') {
-            window.plugins.toast.showLongCenter('No existe conexion a internet');
+            window.plugins.toast.showShortCenter('No existe conexion a internet');
         } else {
 
             var datos, datosRespuesta, nombreVista, serverStatus;

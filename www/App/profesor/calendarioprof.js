@@ -65,6 +65,7 @@ function tareasProf($scope, $ionicModal, $timeout, fabricaTareasProf) {
 
                         $scope.nueva.tareasProf = datos;
                         $scope.nueva.listaTarea = false;
+                        window.plugins.toast.showShortBottom('Tarea creada');
 
                     });
 
@@ -78,6 +79,7 @@ function tareasProf($scope, $ionicModal, $timeout, fabricaTareasProf) {
                 fabricaTareasProf.cantidadTareas().then(function(informacion) {
 
                     fabricaTareasProf.insertarTarea(datosTarea, numeroTareas);
+                    window.plugins.toast.showShortBottom('Tarea creada');
 
                 });
 
@@ -107,6 +109,8 @@ function tareasProf($scope, $ionicModal, $timeout, fabricaTareasProf) {
                         $scope.nueva.tareasProf = nueva_informacion;
 
                     });
+
+                    window.plugins.toast.showShortBottom('Tarea eliminada');
 
                 });
 
@@ -341,7 +345,7 @@ function fabricaTareasProf($cordovaSQLite) {
 
         eliminarTareasHoy: function(fila_tarea) {
 
-            var sqlEliminar, sqlConsulta_Cantidad, db, fila, l_tareas, cantidadTareas;
+            var sqlEliminar, sqlConsulta_Cantidad, db, fila, l_tareas, cantidadTareas, fechaHoy;
 
             db = $cordovaSQLite.openDB({
                 name: "unicesar.db",
@@ -349,13 +353,14 @@ function fabricaTareasProf($cordovaSQLite) {
             });
 
             fila = fila_tarea;
+            fechaHoy = moment(new Date()).format('YYYY-MM-DD');
 
             sqlEliminar = 'DELETE FROM TareasProf WHERE Fila = ?';
-            sqlConsulta_Cantidad = "SELECT * FROM TareasProf";
+            sqlConsulta_Cantidad = "SELECT * FROM TareasProf WHERE Fecha = ?";
 
             $cordovaSQLite.execute(db, sqlEliminar, [fila]);
 
-            cantidadTareas = $cordovaSQLite.execute(db, sqlConsulta_Cantidad, []).then(function(resultado) {
+            cantidadTareas = $cordovaSQLite.execute(db, sqlConsulta_Cantidad, [fechaHoy]).then(function(resultado) {
 
                 l_tareas = resultado.rows.length;
                 return l_tareas;

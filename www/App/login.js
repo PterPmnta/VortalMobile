@@ -82,6 +82,11 @@ function config($stateProvider, $urlRouterProvider) {
         })
 
 
+    .state('noticias', {
+        url: '/noticias',
+        templateUrl: "Templates/noticias.html",
+        controller: "noticiasCtrl"
+    })
 
     .state('oficinas', {
         url: '/oficinas/:tab',

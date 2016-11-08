@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 
 
-angular.module('unicesarApp', ['ionic', 'ngCordova', 'loginApp', 'historialApp', 'loadingPage', 'coreEstudiantes', 'coreProfesores', 'modulo_Oficina'])
+angular.module('unicesarApp', ['ionic', 'ngCordova', 'loginApp', 'historialApp', 'loadingPage', 'coreEstudiantes', 'coreProfesores', 'modulo_Noticias', 'modulo_Oficina'])
     .run(Inicio);
 
 Inicio.$inject = ['$ionicPlatform'];

@@ -1,10 +1,11 @@
 angular.module('modulo_Oficina', ['ionic'])
     .controller('iniciarTabs', iniciarTabs)
-    .factory('informacionTabs', informacionTabs);
+    .factory('informacionTabs', informacionTabs)
+    .directive('goBack', goBack);
 
-iniciarTabs.$inject = ['$scope', 'informacionTabs', '$stateParams'];
+iniciarTabs.$inject = ['$scope', 'informacionTabs', '$stateParams', '$ionicHistory'];
 
-function iniciarTabs($scope, informacionTabs, $stateParams) {
+function iniciarTabs($scope, informacionTabs, $stateParams, $ionicHistory) {
 
     var Departamentos, Facultades, Administracion;
 
@@ -17,6 +18,10 @@ function iniciarTabs($scope, informacionTabs, $stateParams) {
     $scope.programas = Departamentos;
     $scope.decanaturas = Facultades;
     $scope.admon = Administracion;
+
+    $scope.Retroceder = function() {
+        $ionicHistory.goBack();
+    }
 
 }
 
@@ -88,6 +93,36 @@ function informacionTabs($ionicHistory, $ionicPlatform, $state) {
             correo: '*'
         }]
 
+
+    };
+
+}
+
+function goBack() {
+
+    return {
+
+        restrict: 'AE',
+
+        scope: {
+            click: "&"
+        },
+
+        template: '<button class="button button-icon icon ion-ios-arrow-back button-clear"></button>',
+
+        link: function($scope, $element) {
+
+            var button = $element.find('button');
+
+            var evtHandler = function() {
+                button[0].click();
+            };
+
+            button.on('click', function() {
+                $scope.click({});
+            });
+
+        }
 
     };
 
